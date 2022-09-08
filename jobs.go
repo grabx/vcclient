@@ -7,7 +7,7 @@ import (
 	"net/http"
 )
 
-type Jobs []struct {
+type Jobs struct {
 	ResetTriggerDepedency bool   `json:"ResetTriggerDepedency"`
 	Stats                 Stats  `json:"Stats"`
 	ID                    string `json:"Id"`
@@ -53,7 +53,7 @@ type Stats struct {
 /*
 Get Visual Cron Jobs
 */
-func (c *VCClient) GetJobs(ctx context.Context) (*[]Jobs, error) {
+func (c *VCClient) GetJobs(ctx context.Context) (*Jobs, error) {
 	// Get API Token before actual request to api
 	token, err := GetToken(c)
 	// If token was retrieved successfully continue with api request else log fatal
@@ -75,11 +75,11 @@ func (c *VCClient) GetJobs(ctx context.Context) (*[]Jobs, error) {
 	if err := c.sendRequest(req, &res); err != nil {
 		return nil, err
 	}
-	var allJobs []Jobs
-	for _, job := range res {
-		allJobs = append(allJobs, Jobs{
-			job,
-		})
-	}
-	return &allJobs, nil
+	//var allJobs []Jobs
+	// for _, job := range res {
+	// 	allJobs = append(allJobs, Jobs{
+	// 		job,
+	// 	})
+	// }
+	return &res, nil
 }
