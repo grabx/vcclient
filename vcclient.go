@@ -90,6 +90,7 @@ func GetToken(c *VCClient) (string, error) {
 Helper function that parses the json to the provided interface to avoid code duplication
 */
 func (c *VCClient) sendRequest(req *http.Request, v interface{}) error {
+	req.Header.Add("Content-Type", "application/json;charset=utf-8")
 	// Do the request for the requested API endpoint
 	res, err := c.HTTPClient.Do(req)
 	if err != nil {
