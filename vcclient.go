@@ -56,7 +56,7 @@ func GetToken(c *VCClient) (string, error) {
 	loginRequest, err := http.NewRequest(
 		http.MethodGet,
 		fmt.Sprintf("%s%s?username=%s&password=%s",
-			baseURL,
+			c.BaseURL,
 			"/logon",
 			c.UserName,
 			c.Password),
