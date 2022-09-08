@@ -103,6 +103,7 @@ func (c *VCClient) sendRequest(req *http.Request, v interface{}) error {
 
 	defer res.Body.Close()
 
+	log.Println(res.StatusCode)
 	// Handle HTTP return codes
 	if res.StatusCode < http.StatusOK || res.StatusCode >= http.StatusBadRequest {
 		var errRes errorResponse
