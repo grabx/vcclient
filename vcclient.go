@@ -102,10 +102,6 @@ func (c *VCClient) sendRequest(req *http.Request, v interface{}) error {
 
 		return fmt.Errorf("unknown error, status code: %d", res.StatusCode)
 	}
-	// // Unmarshall and populate interface
-	// fullResponse := successResponse{
-	// 	Data: v,
-	// }
 	if err = json.NewDecoder(res.Body).Decode(&v); err != nil {
 		log.Println("Something went wrong")
 		return err
