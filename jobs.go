@@ -8,7 +8,7 @@ import (
 	"time"
 )
 
-type Jobs struct {
+type Job struct {
 	ResetTriggerDepedency bool   `json:"ResetTriggerDepedency"`
 	Stats                 Stats  `json:"Stats"`
 	ID                    string `json:"Id"`
@@ -54,7 +54,7 @@ type Stats struct {
 /*
 Get Visual Cron Jobs
 */
-func (c *VCClient) GetJobs(ctx context.Context) (*[]Jobs, error) {
+func (c *VCClient) GetJobs(ctx context.Context) (*[]Job, error) {
 	// Get API Token before actual request to api
 	token, err := GetToken(c)
 	// If token was retrieved successfully continue with api request else log fatal
@@ -72,7 +72,7 @@ func (c *VCClient) GetJobs(ctx context.Context) (*[]Jobs, error) {
 	}
 	req = req.WithContext(ctx)
 
-	var res []Jobs
+	var res []Job
 	if err := c.sendRequest(req, &res); err != nil {
 		return nil, err
 	}
