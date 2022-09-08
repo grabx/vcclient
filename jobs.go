@@ -53,7 +53,7 @@ type Stats struct {
 /*
 Get Visual Cron Jobs
 */
-func (c *VCClient) GetJobs(ctx context.Context) (*Jobs, error) {
+func (c *VCClient) GetJobs(ctx context.Context) (*[]Jobs, error) {
 	// Get API Token before actual request to api
 	token, err := GetToken(c)
 	// If token was retrieved successfully continue with api request else log fatal
@@ -75,5 +75,11 @@ func (c *VCClient) GetJobs(ctx context.Context) (*Jobs, error) {
 	if err := c.sendRequest(req, &res); err != nil {
 		return nil, err
 	}
-	return &res, nil
+	var allJobs []Jobs
+	for _, job := range res {
+		allJobs = append(allJobs, Jobs{
+			job,
+		})
+	}
+	return &allJobs, nil
 }
