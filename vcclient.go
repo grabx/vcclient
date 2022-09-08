@@ -86,22 +86,11 @@ func GetToken(c *VCClient) (string, error) {
 }
 
 func (c *VCClient) sendRequest(req *http.Request, v interface{}) error {
-	// Get API Token before actual request to api
-	token, err := GetToken(c)
-	// If token was retrieved successfully continue with api request else log fatal
-	if err != nil {
-		log.Fatalln(err)
-		return err
-	}
-	// Set token
-	c.Token = token
-	log.Println(c.Token)
 	// Do the request for the requested API endpoint
 	res, err := c.HTTPClient.Do(req)
 	if err != nil {
 		return err
 	}
-
 	defer res.Body.Close()
 	log.Println(res.Body)
 	log.Println(res.StatusCode)

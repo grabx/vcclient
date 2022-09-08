@@ -55,6 +55,17 @@ type Stats struct {
 Get Visual Cron Jobs
 */
 func (c *VCClient) GetJobs(ctx context.Context) (*Jobs, error) {
+	// Get API Token before actual request to api
+	token, err := GetToken(c)
+	// If token was retrieved successfully continue with api request else log fatal
+	if err != nil {
+		log.Fatalln(err)
+		return nil, err
+	}
+	// Set token
+	c.Token = token
+	log.Println(c.Token)
+
 	// Get API Endpoint for all Jobs
 	log.Printf("Requesting url: %s", fmt.Sprintf("%s/Job/List?token=%s", c.BaseURL, c.Token))
 	req, err := http.NewRequest("GET", fmt.Sprintf("%s/Job/List?token=%s", c.BaseURL, c.Token), nil)
