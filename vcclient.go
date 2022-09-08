@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"io/ioutil"
+	"io"
 	"log"
 	"net/http"
 	"time"
@@ -14,6 +14,9 @@ const (
 	baseURL = "http://localhost:8001/VisualCron/json"
 )
 
+/*
+The VisualCron API Client
+*/
 type VCClient struct {
 	BaseURL    string
 	UserName   string
@@ -22,18 +25,16 @@ type VCClient struct {
 	Token      string
 }
 
+/*
+Contains error Response data for failed API requests
+*/
 type errorResponse struct {
 	Code    int    `json:"code"`
 	Message string `json:"message"`
 }
 
-type successResponse struct {
-	Code int         `json:"code"`
-	Data interface{} `json:"data"`
-}
-
 /*
-Invoke new VC Client
+Invoke new VisualCron API Client
 */
 func NewClient(userName string, password string) *VCClient {
 	return &VCClient{
@@ -47,7 +48,7 @@ func NewClient(userName string, password string) *VCClient {
 }
 
 /*
-Get auth token from api
+Get an auth token from the VisualCron API /VisualCron/json/logon?username=<name>&password=<password>
 */
 func GetToken(c *VCClient) (string, error) {
 	loginClient := http.Client{
@@ -71,7 +72,7 @@ func GetToken(c *VCClient) (string, error) {
 		return "", err
 	}
 	defer res.Body.Close()
-	body, err := ioutil.ReadAll(res.Body)
+	body, err := io.ReadAll(res.Body)
 	if err != nil {
 		log.Fatalln(err)
 		return "", err
@@ -85,6 +86,9 @@ func GetToken(c *VCClient) (string, error) {
 	return loginBody.Token, nil
 }
 
+/*
+Helper function that parses the json to the provided interface to avoid code duplication
+*/
 func (c *VCClient) sendRequest(req *http.Request, v interface{}) error {
 	// Do the request for the requested API endpoint
 	res, err := c.HTTPClient.Do(req)
@@ -99,9 +103,9 @@ func (c *VCClient) sendRequest(req *http.Request, v interface{}) error {
 		if err = json.NewDecoder(res.Body).Decode(&errRes); err == nil {
 			return errors.New(errRes.Message)
 		}
-
 		return fmt.Errorf("unknown error, status code: %d", res.StatusCode)
 	}
+	// Decode json into the interface passed from the endpoint's method
 	if err = json.NewDecoder(res.Body).Decode(&v); err != nil {
 		log.Println("Something went wrong")
 		return err

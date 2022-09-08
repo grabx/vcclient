@@ -7,6 +7,9 @@ import (
 	"net/http"
 )
 
+/*
+Contains all relevant info for a Job
+*/
 type Jobs struct {
 	ResetTriggerDepedency bool   `json:"ResetTriggerDepedency"`
 	Stats                 Stats  `json:"Stats"`
@@ -30,6 +33,9 @@ type Jobs struct {
 	UniqueRunID           int    `json:"UniqueRunId"`
 }
 
+/*
+Contains all metadata for a job's stats
+*/
 type Stats struct {
 	JobID               string  `json:"JobId"`
 	Active              bool    `json:"Active"`
@@ -51,7 +57,7 @@ type Stats struct {
 }
 
 /*
-Get Visual Cron Jobs
+Get all Jobs configured in VisualCron /VisualCron/json/Job/List
 */
 func (c *VCClient) GetJobs(ctx context.Context) (*[]Jobs, error) {
 	// Get API Token before actual request to api
@@ -64,13 +70,14 @@ func (c *VCClient) GetJobs(ctx context.Context) (*[]Jobs, error) {
 	// Set token
 	c.Token = token
 	// Get API Endpoint for all Jobs
-	log.Printf("Requesting url: %s", fmt.Sprintf("%s/Job/List?token=%s", c.BaseURL, c.Token))
 	req, err := http.NewRequest("GET", fmt.Sprintf("%s/Job/List?token=%s", c.BaseURL, c.Token), nil)
 	if err != nil {
 		return nil, err
 	}
+	// Execute the request
 	req = req.WithContext(ctx)
 
+	// Send the request to the endpoint
 	var res []Jobs
 	if err := c.sendRequest(req, &res); err != nil {
 		return nil, err
