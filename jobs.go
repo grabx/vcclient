@@ -64,8 +64,6 @@ func (c *VCClient) GetJobs(ctx context.Context) (*[]Jobs, error) {
 	}
 	// Set token
 	c.Token = token
-	log.Println(c.Token)
-
 	// Get API Endpoint for all Jobs
 	log.Printf("Requesting url: %s", fmt.Sprintf("%s/Job/List?token=%s", c.BaseURL, c.Token))
 	req, err := http.NewRequest("GET", fmt.Sprintf("%s/Job/List?token=%s", c.BaseURL, c.Token), nil)
@@ -74,10 +72,9 @@ func (c *VCClient) GetJobs(ctx context.Context) (*[]Jobs, error) {
 	}
 	req = req.WithContext(ctx)
 
-	res := []Jobs{}
+	var res []Jobs
 	if err := c.sendRequest(req, &res); err != nil {
 		return nil, err
 	}
-	log.Printf("Results: %v", &res)
 	return &res, nil
 }
