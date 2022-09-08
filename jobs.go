@@ -3,6 +3,7 @@ package vcclient
 import (
 	"context"
 	"fmt"
+	"log"
 	"net/http"
 	"time"
 )
@@ -55,6 +56,7 @@ Get Visual Cron Jobs
 */
 func (c *VCClient) GetJobs(ctx context.Context) (*Jobs, error) {
 	// Get API Endpoint for all Jobs
+	log.Printf("Requesting url: %s", fmt.Sprintf("%s/Job/List?token=%s", c.BaseURL, c.Token))
 	req, err := http.NewRequest("GET", fmt.Sprintf("%s/Job/List?token=%s", c.BaseURL, c.Token), nil)
 	if err != nil {
 		return nil, err
