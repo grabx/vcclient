@@ -2,6 +2,7 @@ package vcclient
 
 import (
 	"encoding/json"
+	"errors"
 	"fmt"
 	"io/ioutil"
 	"log"
@@ -93,19 +94,19 @@ func (c *VCClient) sendRequest(req *http.Request, v interface{}) error {
 	defer res.Body.Close()
 	log.Println(res.StatusCode)
 	// Handle HTTP return codes
-	// if res.StatusCode < http.StatusOK || res.StatusCode >= http.StatusBadRequest {
-	// 	var errRes errorResponse
-	// 	if err = json.NewDecoder(res.Body).Decode(&errRes); err == nil {
-	// 		return errors.New(errRes.Message)
-	// 	}
+	if res.StatusCode < http.StatusOK || res.StatusCode >= http.StatusBadRequest {
+		var errRes errorResponse
+		if err = json.NewDecoder(res.Body).Decode(&errRes); err == nil {
+			return errors.New(errRes.Message)
+		}
 
-	// 	return fmt.Errorf("unknown error, status code: %d", res.StatusCode)
-	// }
+		return fmt.Errorf("unknown error, status code: %d", res.StatusCode)
+	}
 	// Unmarshall and populate interface
-	// fullResponse := successResponse{
-	// 	Data: v,
-	// }
-	if err = json.NewDecoder(res.Body).Decode(&v); err != nil {
+	fullResponse := successResponse{
+		Data: v,
+	}
+	if err = json.NewDecoder(res.Body).Decode(&fullResponse); err != nil {
 		log.Println("Something went wrong")
 		return err
 	}
