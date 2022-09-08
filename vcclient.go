@@ -92,7 +92,6 @@ func (c *VCClient) sendRequest(req *http.Request, v interface{}) error {
 		return err
 	}
 	defer res.Body.Close()
-	log.Println(res.Body)
 	log.Println(res.StatusCode)
 	// Handle HTTP return codes
 	if res.StatusCode < http.StatusOK || res.StatusCode >= http.StatusBadRequest {
@@ -103,12 +102,13 @@ func (c *VCClient) sendRequest(req *http.Request, v interface{}) error {
 
 		return fmt.Errorf("unknown error, status code: %d", res.StatusCode)
 	}
-	log.Println(v)
+	log.Printf("Interface: %v\n", &v)
 	// Unmarshall and populate interface
 	fullResponse := successResponse{
 		Data: v,
 	}
 	if err = json.NewDecoder(res.Body).Decode(&fullResponse); err != nil {
+		log.Println("Something went wrong")
 		return err
 	}
 	return nil
