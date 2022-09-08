@@ -95,6 +95,7 @@ func (c *VCClient) sendRequest(req *http.Request, v interface{}) error {
 	}
 	// Set token
 	c.Token = token
+	log.Println(c.Token)
 	// Do the request for the requested API endpoint
 	res, err := c.HTTPClient.Do(req)
 	if err != nil {
@@ -113,6 +114,7 @@ func (c *VCClient) sendRequest(req *http.Request, v interface{}) error {
 
 		return fmt.Errorf("unknown error, status code: %d", res.StatusCode)
 	}
+	log.Println(v)
 	// Unmarshall and populate interface
 	fullResponse := successResponse{
 		Data: v,

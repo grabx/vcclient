@@ -3,7 +3,6 @@ package vcclient
 import (
 	"context"
 	"fmt"
-	"log"
 	"net/http"
 	"time"
 )
@@ -66,7 +65,6 @@ func (c *VCClient) GetJobs(ctx context.Context) (*Jobs, error) {
 	if err := c.sendRequest(req, &res); err != nil {
 		return nil, err
 	}
-	log.Println(&res)
 
 	return &res, nil
 }
