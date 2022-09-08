@@ -3,7 +3,6 @@ package vcclient
 import (
 	"encoding/json"
 	"fmt"
-	"io"
 	"io/ioutil"
 	"log"
 	"net/http"
@@ -92,8 +91,6 @@ func (c *VCClient) sendRequest(req *http.Request, v interface{}) error {
 		return err
 	}
 	defer res.Body.Close()
-	body, err := io.ReadAll(res.Body)
-	log.Printf("Body: %s", string(body))
 	log.Println(res.StatusCode)
 	// Handle HTTP return codes
 	// if res.StatusCode < http.StatusOK || res.StatusCode >= http.StatusBadRequest {
