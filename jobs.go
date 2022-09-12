@@ -11,26 +11,27 @@ import (
 Contains all relevant info for a Job
 */
 type Jobs struct {
-	ResetTriggerDepedency bool   `json:"ResetTriggerDepedency"`
-	Stats                 Stats  `json:"Stats"`
-	ID                    string `json:"Id"`
-	Test                  bool   `json:"Test"`
-	IsTaskRepository      bool   `json:"IsTaskRepository"`
-	UseRunRandomValue     bool   `json:"UseRunRandomValue"`
-	RunRandomValue        int    `json:"RunRandomValue"`
-	Missed                bool   `json:"Missed"`
-	MissedDate            string `json:"MissedDate"`
-	Name                  string `json:"Name"`
-	Description           string `json:"Description"`
-	Group                 string `json:"Group"`
-	JobDebugging          bool   `json:"JobDebugging"`
-	RunMissed             bool   `json:"RunMissed"`
-	RunOnce               bool   `json:"RunOnce"`
-	RemoveAfterExecution  bool   `json:"RemoveAfterExecution"`
-	RunTasksInOrder       bool   `json:"RunTasksInOrder"`
-	NotStartIfRunning     bool   `json:"NotStartIfRunning"`
-	QueueJobs             bool   `json:"QueueJobs"`
-	UniqueRunID           int    `json:"UniqueRunId"`
+	ResetTriggerDepedency bool    `json:"ResetTriggerDepedency"`
+	Stats                 Stats   `json:"Stats"`
+	TimeOut               TimeOut `json:"TimeOut"`
+	ID                    string  `json:"Id"`
+	Test                  bool    `json:"Test"`
+	IsTaskRepository      bool    `json:"IsTaskRepository"`
+	UseRunRandomValue     bool    `json:"UseRunRandomValue"`
+	RunRandomValue        int     `json:"RunRandomValue"`
+	Missed                bool    `json:"Missed"`
+	MissedDate            string  `json:"MissedDate"`
+	Name                  string  `json:"Name"`
+	Description           string  `json:"Description"`
+	Group                 string  `json:"Group"`
+	JobDebugging          bool    `json:"JobDebugging"`
+	RunMissed             bool    `json:"RunMissed"`
+	RunOnce               bool    `json:"RunOnce"`
+	RemoveAfterExecution  bool    `json:"RemoveAfterExecution"`
+	RunTasksInOrder       bool    `json:"RunTasksInOrder"`
+	NotStartIfRunning     bool    `json:"NotStartIfRunning"`
+	QueueJobs             bool    `json:"QueueJobs"`
+	UniqueRunID           int     `json:"UniqueRunId"`
 }
 
 /*
@@ -54,6 +55,17 @@ type Stats struct {
 	TriggerCPUTime      float64 `json:"TriggerCPUTime"`
 	TasksCPUTime        float64 `json:"TasksCPUTime"`
 	NotificationCPUTime float64 `json:"NotificationCPUTime"`
+}
+
+/*
+Contains all configuration about timeout settings per job
+*/
+type TimeOut struct {
+	Use           bool `json:"Use"`
+	Hours         int  `json:"Hours"`
+	Minutes       int  `json:"Minutes"`
+	Seconds       int  `json:"Seconds"`
+	ConsiderError bool `json:"ConsiderError"`
 }
 
 /*
